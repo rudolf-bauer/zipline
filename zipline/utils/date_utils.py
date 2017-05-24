@@ -49,7 +49,6 @@ def compute_date_range_chunks(calendar, start_date, end_date, chunksize):
         return [(dates[0], dates[1])]
 
     all_sessions = calendar.all_sessions
-    all_sessions.offset = None
     start_ix, end_ix = all_sessions.slice_locs(start_date, end_date)
     return (
         (r[0], r[-1]) for r in partition_all(
