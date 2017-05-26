@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import pandas as pd
+import pandas_datareader as pdr
 
 from six.moves.urllib_parse import urlencode
 
@@ -42,7 +43,7 @@ def format_yahoo_index_url(symbol, start_date, end_date):
     )
 
 
-def get_benchmark_returns(symbol, start_date, end_date):
+def get_benchmark_returns(symbol, start_date, end_date, source='google'):
     """
     Get a Series of benchmark returns from Yahoo.
 
@@ -51,11 +52,4 @@ def get_benchmark_returns(symbol, start_date, end_date):
     start_date is **not** included because we need the close from day N - 1 to
     compute the returns for day N.
     """
-    return pd.read_csv(
-        format_yahoo_index_url(symbol, start_date, end_date),
-        parse_dates=['Date'],
-        index_col='Date',
-        usecols=["Adj Close", "Date"],
-        squeeze=True,  # squeeze tells pandas to make this a Series
-                       # instead of a 1-column DataFrame
-    ).sort_index().tz_localize('UTC').pct_change(1).iloc[1:]
+    return pdr.data.DataReader(symbol, source, start_date, end_date).sort_index().tz_localize('UTC').pct_change(1).iloc[1:]
