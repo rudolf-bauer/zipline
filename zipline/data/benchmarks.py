@@ -52,4 +52,5 @@ def get_benchmark_returns(symbol, start_date, end_date, source='google'):
     start_date is **not** included because we need the close from day N - 1 to
     compute the returns for day N.
     """
-    return pdr.data.DataReader(symbol, source, start_date, end_date).sort_index().tz_localize('UTC').pct_change(1).iloc[1:]
+    df = pdr.data.DataReader(symbol, source, start_date.to_datetime(), end_date.to_datetime())
+    return df.sort_index().tz_localize('UTC').pct_change(1).iloc[1:]
