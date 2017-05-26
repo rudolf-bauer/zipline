@@ -14,6 +14,7 @@
 # limitations under the License.
 from operator import itemgetter
 import re
+import datetime as dt
 
 import numpy as np
 import pandas as pd
@@ -64,8 +65,8 @@ def get_treasury_data(start_date, end_date):
         "?rel=H15"
         "&series=bf17364827e38702b42a58cf8eaa3f78"
         "&lastObs="
-        "&from="  # An unbounded query is ~2x faster than specifying dates.
-        "&to="
+        "&from=01/01/1962"
+        "&to=" + dt.date.today().strftime('%D') +
         "&filetype=csv"
         "&label=omit"
         "&layout=seriescolumn"
